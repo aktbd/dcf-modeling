@@ -8,25 +8,46 @@
 | Field | Value |
 |-------|-------|
 | Branch | `claude/infrastructure-pe-interview-prep-K9DUF` |
-| Latest Tag | `deliverables-20260120-0900` |
-| Last Updated | 2026-01-20 09:00 UTC |
+| Latest Tag | `deliverables-20260120-1000` |
+| Last Updated | 2026-01-20 10:00 UTC |
 
 ## Deliverables
 
 | Asset | Status | Validation |
 |-------|--------|------------|
-| Model_1_CCGT.xlsx | ✓ Verified | 6 tabs + Spark Spread + Control Panel |
-| Model_2_Peaker.xlsx | ✓ Verified | 6 tabs + Spark Spread + Control Panel |
-| Model_3_SolarBESS.xlsx | ✓ Verified | 6 tabs + Control Panel + Sculpt transparency |
-| Model_4_Transmission.xlsx | ✓ Verified | 6 tabs + Control Panel + Sculpt transparency |
-| Model_5_Midstream.xlsx | ✓ Verified | 6 tabs + Control Panel |
-| **Model_6_Wind.xlsx** | ✓ NEW | 6 tabs + PTC mechanics + Sculpted debt |
-| Drill versions (6) | ✓ Verified | All 6 assets with 6 tabs each |
-| IC Memos (6) | ✓ Valid | DOCX format (Wind added) |
-| **Lotus_Study_Guide.md** | ✓ NEW | Deep conceptual explanations |
+| Model_1_CCGT.xlsx | ✓ Complete | 6 tabs + Spark Spread + Unlevered IRR + Sensitivity |
+| Model_2_Peaker.xlsx | ✓ Complete | 6 tabs + Spark Spread + Unlevered IRR + Sensitivity |
+| Model_3_SolarBESS.xlsx | ✓ Complete | 6 tabs + Sculpt transparency + Unlevered IRR |
+| Model_4_Transmission.xlsx | ✓ Complete | 6 tabs + Sculpt transparency + Unlevered IRR |
+| Model_5_Midstream.xlsx | ✓ Complete | 6 tabs + Unlevered IRR + Sensitivity |
+| Model_6_Wind.xlsx | ✓ Complete | 6 tabs + PTC mechanics + Sculpted debt |
+| Drill versions (6) | ✓ ENHANCED | Formulas blanked + DRILL MODE note + Unlevered IRR |
+| IC Memos (6) | ✓ ENHANCED | Fill-in-the-blank templates with asset-specific prompts |
+| **Lotus_Study_Guide.md** | ✓ COMPLETE | 12 sections including Advanced Scenarios + Proxy Defaults |
 | Reference Materials | ✓ Valid | Template, CheatSheet (updated), Manifesto |
 
 **Download:** [deliverables_bundle.zip](https://github.com/aktbd/dcf-modeling/raw/claude/infrastructure-pe-interview-prep-K9DUF/deliverables/deliverables-20260120-0030/deliverables_bundle.zip)
+
+## Final Polish (2026-01-20 10:00)
+
+**Commit:** `880bf1a` - Drills + Sensitivity + Memo Templates + Study Guide Enhancements
+
+| Enhancement | Status | Details |
+|-------------|--------|---------|
+| Drill Blanking | Complete | All 6 Drills have key formulas blanked with DRILL MODE note |
+| Unlevered IRR | Complete | Added to all 6 Model files |
+| Sensitivity Notes | Complete | "+/- 5% Entry → ~+/- 1% IRR" in all Models |
+| IC Memo Templates | Complete | Fill-in-the-blank format with asset-specific prompts |
+| Study Guide Sec 11 | Complete | Advanced Scenarios (Mezz, Time Series, Construction, ERCOT, Tax Equity) |
+| Study Guide Sec 12 | Complete | Proxy Defaults (market prices, financing terms, transaction defaults) |
+
+**Prior Fixes Verified:**
+- Midstream Revenue: `=E56*E57` (no *1000 error)
+- Transmission Sources: `=D109+D110` (no DSRA in Sources)
+- Solar Tax: has `MAX(0,...)` guardrail
+- Wind PTC: uses `MIN()` (cannot create negative taxes)
+
+**ZIP Verified:** 23 files, SHA256: `b591f39d01167d74818d7aff362c24361092e27c7c15f2076dee03baf11f14b9`
 
 ## 3-Tab Structure Enhancement (2026-01-20 07:30)
 
@@ -75,6 +96,7 @@ All Model and Drill files now have:
 
 ## Recent Activity
 
+- 2026-01-20 10:00: **Final Polish**: Drill blanking, Unlevered IRR, IC Memo templates, Study Guide Sec 11-12 (commit 880bf1a)
 - 2026-01-20 09:00: **Final Update**: Wind model, Study Guide, Spark Spread, enhanced Control Panel, Proxy tables
 - 2026-01-20 07:30: 3-Tab Structure: Model_Quick, Model_Standard, Model_Full + Control Panel + Cold Start Workflow
 - 2026-01-20 06:00: Critical audit fixes: Midstream *1000, Transmission S&U, Solar MAX(0) (commit d9f8b1f)

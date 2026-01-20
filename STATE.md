@@ -9,7 +9,7 @@
 |-------|-------|
 | Branch | `claude/infrastructure-pe-interview-prep-K9DUF` |
 | Latest Tag | `deliverables-20260120-0030` |
-| Last Updated | 2026-01-20 03:15 UTC |
+| Last Updated | 2026-01-20 03:45 UTC |
 
 ## Deliverables
 
@@ -26,23 +26,32 @@
 
 **Download:** [deliverables-20260120-0030.zip](https://github.com/aktbd/dcf-modeling/raw/claude/infrastructure-pe-interview-prep-K9DUF/deliverables/deliverables-20260120-0030.zip)
 
-## Formula Verification (2026-01-20 02:15)
+## Formula Verification (2026-01-20 03:45)
 
-**Fix Applied:** DSRA Target circular reference resolved in cash sweep models (CCGT, Peaker, Midstream)
+**Full Sanity Check Complete:**
 
-- **Root cause:** DSRA Target Y(n) referenced debt_service_pre Y(n+1), which depended on ending balance, which depended on cash sweep, which depended on DSRA funding
-- **Fix:** Added `scheduled_ds` row using straight-line amortization only (independent of sweep)
-- **Sculpted models** (Solar+BESS, Transmission): No fix needed - debt service determined by CFADS/target_DSCR, independent of DSRA
+| Model | DSCR Formula | Min DSCR | Status |
+|-------|--------------|----------|--------|
+| CCGT | =IF(DS>0,CFADS/DS,0) | ~1.29x | ✓ PASS |
+| Peaker | =IF(DS>0,CFADS/DS,0) | ≥1.25x | ✓ PASS |
+| Solar+BESS | =IF(DS>0,CFADS/DS,0) | ≥1.30x | ✓ PASS |
+| Transmission | =IF(DS>0,CFADS/DS,0) | ≥1.35x | ✓ PASS |
+| Midstream | =IF(DS>0,CFADS/DS,0) | ≥1.25x | ✓ PASS |
 
-**Verification Method:** `formulas` Python library for formula evaluation
+**CCGT Manual Verification:**
+- Revenue: $122.55mm (Energy $84.41 + Capacity $38.14)
+- OpEx: $48.56mm (Fuel $36.93 + VOM $6.15 + FOM $5.47)
+- EBITDA: $73.99mm
+- CFADS: $62.86mm
+- Debt Service: $48.64mm
+- **DSCR = $62.86 / $48.64 = 1.292x** ✓
 
-- All models load and calculate without circular reference errors
-- No #REF, #NAME, #VALUE, #DIV/0 errors detected
-- DSCR values in expected ranges (1.25x-1.40x)
-- Fuel cost uses 1e9 divisor (correct)
+**Previous Fix (still applied):** DSRA Target circular reference resolved via `scheduled_ds` row
 
 ## Recent Activity
 
+- 2026-01-20 03:45: Full sanity check - all models validated, DSCR 1.29x confirmed
+- 2026-01-20 03:30: Fixed Column C text format (removed "=" prefix breaking parser)
 - 2026-01-20 03:15: Added formula comments, IC Memo tabs, Quick Reference sheet
 - 2026-01-20 02:45: Formula cleanup - replaced /1000000000 with /1E9 for readability
 - 2026-01-20 02:35: Confirmed GitHub URLs as primary delivery (sandbox network blocked)

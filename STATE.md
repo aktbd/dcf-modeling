@@ -8,23 +8,46 @@
 | Field | Value |
 |-------|-------|
 | Branch | `claude/infrastructure-pe-interview-prep-K9DUF` |
-| Latest Tag | `deliverables-20260120-0030` |
-| Last Updated | 2026-01-20 06:00 UTC |
+| Latest Tag | `deliverables-20260120-0730` |
+| Last Updated | 2026-01-20 07:30 UTC |
 
 ## Deliverables
 
 | Asset | Status | Validation |
 |-------|--------|------------|
-| Model_1_CCGT.xlsx | ✓ Verified | [README, Case Prompt, IC Memo, Model], MINIFS |
-| Model_2_Peaker.xlsx | ✓ Verified | [README, Case Prompt, IC Memo, Model], MINIFS |
-| Model_3_SolarBESS.xlsx | ✓ Verified | [README, Case Prompt, IC Memo, Model], MINIFS |
-| Model_4_Transmission.xlsx | ✓ Verified | [README, Case Prompt, IC Memo, Model], MINIFS |
-| Model_5_Midstream.xlsx | ✓ Verified | [README, Case Prompt, IC Memo, Model], MINIFS |
-| Drill versions (5) | ✓ Verified | [Intuition Guide, Case Prompt, IC Memo, Model], MINIFS |
+| Model_1_CCGT.xlsx | ✓ Verified | [README, Case Prompt, IC Memo, Model_Quick, Model_Standard, Model_Full] |
+| Model_2_Peaker.xlsx | ✓ Verified | [README, Case Prompt, IC Memo, Model_Quick, Model_Standard, Model_Full] |
+| Model_3_SolarBESS.xlsx | ✓ Verified | [README, Case Prompt, IC Memo, Model_Quick, Model_Standard, Model_Full] |
+| Model_4_Transmission.xlsx | ✓ Verified | [README, Case Prompt, IC Memo, Model_Quick, Model_Standard, Model_Full] |
+| Model_5_Midstream.xlsx | ✓ Verified | [README, Case Prompt, IC Memo, Model_Quick, Model_Standard, Model_Full] |
+| Drill versions (5) | ✓ Verified | [Intuition Guide, Case Prompt, IC Memo, Model_Quick, Model_Standard, Model_Full] |
 | IC Memos (5) | ✓ Valid | DOCX format |
 | Reference Materials | ✓ Valid | Template, CheatSheet, Manifesto |
 
 **Download:** [deliverables_bundle.zip](https://github.com/aktbd/dcf-modeling/raw/claude/infrastructure-pe-interview-prep-K9DUF/deliverables/deliverables-20260120-0030/deliverables_bundle.zip)
+
+## 3-Tab Structure Enhancement (2026-01-20 07:30)
+
+All Model and Drill files now have:
+
+| Tab | Purpose | Rows |
+|-----|---------|------|
+| Model_Quick | 90-min build, no DSRA/sweep | ~60 |
+| Model_Standard | Full model + Control Panel | ~150 |
+| Model_Full | Standard + LLCR/PLCR | ~160 |
+
+**Control Panel Flags:**
+- Revenue Mode: Merchant / Contracted / Hybrid
+- Contract Years: If Hybrid, years of contracted revenue
+- Debt Sweep: ON / OFF
+- Sweep %: 75% (when Sweep = ON)
+- Exit Method: Multiple / DCF
+
+**README Additions:**
+- Cold Start Workflow (6 phases, 4-hour test)
+- Time Budget breakdown
+- Debt Sizing Approaches (Straight-line, Sweep, Sculpt)
+- Key Formula Concepts (Spark Spread, UCAP, LLCR/PLCR)
 
 ## Formula Verification (2026-01-20 03:45)
 
@@ -50,6 +73,7 @@
 
 ## Recent Activity
 
+- 2026-01-20 07:30: **3-Tab Structure**: Model_Quick, Model_Standard, Model_Full + Control Panel + Cold Start Workflow
 - 2026-01-20 06:00: Critical audit fixes: Midstream *1000, Transmission S&U, Solar MAX(0) (commit d9f8b1f)
 - 2026-01-20 05:30: Added README, Case Prompt tabs; MINIFS for Min DSCR (commit 77efe81)
 - 2026-01-20 05:00: Re-verified ZIP with extraction test, force pushed (commit 1877df2)

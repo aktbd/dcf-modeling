@@ -579,6 +579,15 @@ def build_peaker_model(output_path):
         apply_output_style(ws, row, col, formula)
         ws.cell(row=row, column=col).number_format = MULTIPLE_FORMAT
 
+    # Add Scheduled DS row (for DSRA - breaks circularity)
+    row = 93; rows['scheduled_ds'] = row
+    set_label(ws, row, "Scheduled DS (for DSRA)", "$mm", "Based on straight-line amort")
+    for col in range(5, 15):
+        yr = col - 4
+        formula = f"=MAX(0,$D${rows['debt_amount']}-({yr}-1)*$D${rows['scheduled_principal']})*$D${rows['interest_rate']}+$D${rows['scheduled_principal']}"
+        apply_calc_style(ws, row, col, formula)
+        ws.cell(row=row, column=col).number_format = CURRENCY_FORMAT
+
     row = 94
     # ========================================================================
     # DSRA
@@ -589,12 +598,12 @@ def build_peaker_model(output_path):
         ws.cell(row=row, column=col).fill = NAVY_FILL
 
     row = 95; rows['dsra_target'] = row
-    set_label(ws, row, "DSRA Target", "$mm", "Next Yr DS × DSRA Months / 12")
-    apply_calc_style(ws, row, 4, f"=E{rows['debt_service_pre']}*$D${rows['dsra_months']}/12")
+    set_label(ws, row, "DSRA Target", "$mm", "Next Yr Scheduled DS × DSRA Months / 12")
+    apply_calc_style(ws, row, 4, f"=E{rows['scheduled_ds']}*$D${rows['dsra_months']}/12")
     ws.cell(row=row, column=4).number_format = CURRENCY_FORMAT
     for col in range(5, 14):
         next_col = col_letter(col + 1)
-        formula = f"={next_col}{rows['debt_service_pre']}*$D${rows['dsra_months']}/12"
+        formula = f"={next_col}{rows['scheduled_ds']}*$D${rows['dsra_months']}/12"
         apply_calc_style(ws, row, col, formula)
         ws.cell(row=row, column=col).number_format = CURRENCY_FORMAT
     apply_calc_style(ws, row, 14, "=0")

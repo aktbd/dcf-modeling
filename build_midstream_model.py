@@ -513,7 +513,18 @@ def build_midstream_model(output_path):
         apply_output_style(ws, row, col, formula)
         ws.cell(row=row, column=col).number_format = MULTIPLE_FORMAT
 
-    row = 81
+    # Add Scheduled DS row (for DSRA calculation - breaks circularity)
+    row = 80; rows['scheduled_ds'] = row
+    set_label(ws, row, "Scheduled DS (for DSRA)", "$mm", "Based on straight-line amort, no sweep")
+    for col in range(5, 15):
+        yr = col - 4
+        # Calculate scheduled DS based on straight-line amortization only
+        # Scheduled DS = (Debt Amount - (yr-1) × Scheduled Principal) × Interest Rate + Scheduled Principal
+        formula = f"=MAX(0,$D${rows['debt_amount']}-({yr}-1)*$D${rows['scheduled_principal']})*$D${rows['interest_rate']}+$D${rows['scheduled_principal']}"
+        apply_calc_style(ws, row, col, formula)
+        ws.cell(row=row, column=col).number_format = CURRENCY_FORMAT
+
+    row = 82
     # ========================================================================
     # DSRA
     # ========================================================================
@@ -522,33 +533,34 @@ def build_midstream_model(output_path):
     for col in range(2, 15):
         ws.cell(row=row, column=col).fill = NAVY_FILL
 
-    row = 82; rows['dsra_target'] = row
-    set_label(ws, row, "DSRA Target", "$mm", "Next Yr DS × DSRA Months / 12")
-    apply_calc_style(ws, row, 4, f"=E{rows['debt_service_pre']}*$D${rows['dsra_months']}/12")
+    # DSRA Target uses scheduled_ds (not debt_service_pre) to break circular reference
+    row = 83; rows['dsra_target'] = row
+    set_label(ws, row, "DSRA Target", "$mm", "Next Yr Scheduled DS × DSRA Months / 12")
+    apply_calc_style(ws, row, 4, f"=E{rows['scheduled_ds']}*$D${rows['dsra_months']}/12")
     ws.cell(row=row, column=4).number_format = CURRENCY_FORMAT
     for col in range(5, 14):
         next_col = col_letter(col + 1)
-        formula = f"={next_col}{rows['debt_service_pre']}*$D${rows['dsra_months']}/12"
+        formula = f"={next_col}{rows['scheduled_ds']}*$D${rows['dsra_months']}/12"
         apply_calc_style(ws, row, col, formula)
         ws.cell(row=row, column=col).number_format = CURRENCY_FORMAT
     apply_calc_style(ws, row, 14, "=0")
     ws.cell(row=row, column=14).number_format = CURRENCY_FORMAT
 
-    row = 83; rows['dsra_beg'] = row
+    row = 84; rows['dsra_beg'] = row
     set_label(ws, row, "DSRA Beginning", "$mm")
     apply_calc_style(ws, row, 4, "=0")
     ws.cell(row=row, column=4).number_format = CURRENCY_FORMAT
     for col in range(5, 15):
         ws.cell(row=row, column=col).number_format = CURRENCY_FORMAT
 
-    row = 84; rows['dsra_funding'] = row
+    row = 85; rows['dsra_funding'] = row
     set_label(ws, row, "DSRA Funding/(Release)", "$mm", "Target - Beginning")
     for col in range(4, 15):
         formula = f"={col_letter(col)}{rows['dsra_target']}-{col_letter(col)}{rows['dsra_beg']}"
         apply_calc_style(ws, row, col, formula)
         ws.cell(row=row, column=col).number_format = CURRENCY_FORMAT
 
-    row = 85; rows['dsra_end'] = row
+    row = 86; rows['dsra_end'] = row
     set_label(ws, row, "DSRA Ending", "$mm", "Beginning + Funding")
     for col in range(4, 15):
         formula = f"={col_letter(col)}{rows['dsra_beg']}+{col_letter(col)}{rows['dsra_funding']}"

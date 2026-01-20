@@ -16,6 +16,16 @@ Append-only history of deliverable drops.
 
 **Location:** [`/deliverables/deliverables-20260120-0030/`](./deliverables/deliverables-20260120-0030/)
 
-**ZIP sha256:** `e67cca8841d0f9cdbe40c04929c179a3a2b5f5e4fa0a102d32b7f9bc3dc7d7e5`
+**ZIP sha256:** `0de34c32c1652ac71b15cc35231b640002d07634fccda0aafa2dfbd67d11cee4`
+
+### Update 2026-01-20 02:15 UTC (in-place fix, same tag)
+
+**Bug Fix:** Circular reference in DSRA Target formula (cash sweep models)
+
+- **Affected models:** CCGT, Peaker, Midstream (cash sweep structure)
+- **Root cause:** DSRA Target referenced debt_service_pre which depended on cash sweep, creating circular dependency
+- **Fix:** Added `scheduled_ds` row using straight-line amortization to break circularity
+- **Verification:** All models pass formula evaluation using `formulas` Python library
+- **Not affected:** Solar+BESS, Transmission (sculpted debt, no circularity)
 
 ---

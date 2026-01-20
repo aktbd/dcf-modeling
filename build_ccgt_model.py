@@ -682,7 +682,20 @@ def build_ccgt_model(output_path):
         apply_output_style(ws, row, col, formula)
         ws.cell(row=row, column=col).number_format = MULTIPLE_FORMAT
 
-    row = 93  # Blank
+    # Add Scheduled DS row (for DSRA calculation - breaks circularity)
+    # This calculates what DS would be under straight-line amortization, ignoring sweep
+    row = 93
+    rows['scheduled_ds'] = row
+    set_label(ws, row, "Scheduled DS (for DSRA)", "$mm", "Based on straight-line amort, no sweep")
+    for col in range(5, 15):
+        yr = col - 4  # Year number (1, 2, 3, ...)
+        # Scheduled Beg Bal = max(0, Debt - (yr-1) * Sched Principal)
+        # Scheduled Interest = Scheduled Beg Bal * Rate
+        # Scheduled DS = Scheduled Interest + Scheduled Principal
+        formula = f"=MAX(0,$D${rows['debt_amount']}-({yr}-1)*$D${rows['scheduled_principal']})*$D${rows['interest_rate']}+$D${rows['scheduled_principal']}"
+        apply_calc_style(ws, row, col, formula)
+        ws.cell(row=row, column=col).number_format = CURRENCY_FORMAT
+
     row = 94  # Blank
 
     # ========================================================================
@@ -696,14 +709,14 @@ def build_ccgt_model(output_path):
 
     row = 96
     rows['dsra_target'] = row
-    set_label(ws, row, "DSRA Target", "$mm", "Next Yr DS × DSRA Months / 12")
-    # Y0 target = Y1 DS × DSRA Months / 12
-    apply_calc_style(ws, row, 4, f"=E{rows['debt_service_pre']}*$D${rows['dsra_months']}/12")
+    set_label(ws, row, "DSRA Target", "$mm", "Next Yr Scheduled DS × DSRA Months / 12")
+    # Y0 target = Y1 Scheduled DS × DSRA Months / 12 (uses scheduled_ds to break circularity)
+    apply_calc_style(ws, row, 4, f"=E{rows['scheduled_ds']}*$D${rows['dsra_months']}/12")
     ws.cell(row=row, column=4).number_format = CURRENCY_FORMAT
-    # Y1-Y9 target = Next year DS × DSRA Months / 12
+    # Y1-Y9 target = Next year Scheduled DS × DSRA Months / 12
     for col in range(5, 14):
         next_col = col_letter(col + 1)
-        formula = f"={next_col}{rows['debt_service_pre']}*$D${rows['dsra_months']}/12"
+        formula = f"={next_col}{rows['scheduled_ds']}*$D${rows['dsra_months']}/12"
         apply_calc_style(ws, row, col, formula)
         ws.cell(row=row, column=col).number_format = CURRENCY_FORMAT
     # Y10 target = 0 (released at exit or debt paid off)

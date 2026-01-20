@@ -519,4 +519,177 @@ Example: =IF(E95>0,E82/E95,0)
 
 ---
 
-*This guide is for study and preparation. Keep Excel annotations concise — reference this document for deep understanding.*
+
+
+---
+
+## 11. ADVANCED SCENARIOS (Edge Cases)
+
+### 11A. Preferred Equity / Mezz
+
+When you see "mezz" or "preferred" in the capital structure:
+
+```
+Sources:
+  Senior Debt:     $XXmm  (60%)
+  Preferred:       $XXmm  (15%)  ← ADD THIS
+  Common Equity:   $XXmm  (25%)
+```
+
+**Mechanics:**
+- Pref Coupon = Pref Amount × Rate (typically 8-12%)
+- Pref coupon comes OUT of distributable cash before common
+- Common IRR calculated on common equity only
+- Pref is NOT debt (doesn't count in DSCR denominator)
+
+**Waterfall:**
+```
+CFADS
+  Less: Debt Service
+  Less: DSRA Funding
+  Less: Pref Coupon    ← NEW
+  Equals: Distributable to Common
+```
+
+### 11B. Time Series Pricing
+
+When given a price curve instead of escalation rate:
+
+```
+Year    Power Price
+1       $42
+2       $45
+3       $48
+4       $44
+5       $50
+...
+```
+
+**Approach:**
+- Input prices directly in a row
+- Reference cells individually: `=E$25` not `=$D$25*(1+esc)^...`
+- Watch for embedded "cliffs" or shocks in the curve
+- Note any reversion to mean in outer years
+
+### 11C. Construction Period
+
+When COD (Commercial Operation Date) is in the future:
+
+**Key Mechanics:**
+- Y0-Y2: Zero revenue, construction costs
+- AFUDC: Interest capitalizes to cost basis
+- Two financing events: Construction loan → Term debt at COD
+- Development fees often treated as Uses
+
+**Simplified Approach (if time-constrained):**
+- Start model at COD
+- Treat all construction as "Entry EV"
+- Note assumption in memo
+
+### 11D. ERCOT (Texas) Modeling
+
+Energy-only market characteristics:
+
+```
+Revenue = Energy Only (no capacity payments!)
+  • Higher price volatility
+  • Scarcity pricing: $5,000/MWh cap
+  • More weather-dependent
+```
+
+**Key Adjustments:**
+- Capacity Revenue row = $0
+- Higher energy price assumptions for peakers
+- Note as key risk in IC memo
+- Consider hedging/PPA as mitigant
+
+### 11E. Partnership Flip / Tax Equity
+
+If mentioned, they will give you the structure. Key concepts:
+
+```
+Year 1-10: Tax equity gets 99% of tax benefits
+Year 10+: "Flip" to sponsor at 5% residual value
+```
+
+**In a timed test:**
+- Don't try to build full tax equity waterfall
+- Model simplified: adjust effective tax rate or add tax benefit row
+- Note in memo: "Assumes tax equity monetization per provided terms"
+
+---
+
+## 12. PROXY DEFAULTS (When Inputs Are Missing)
+
+### 12.1 Thermal Plants
+
+| Input | CCGT | Peaker | Units |
+|-------|------|--------|-------|
+| Heat Rate | 7,000 | 10,500 | Btu/kWh |
+| Capacity Factor | 55% | 10% | % |
+| Forced Outage Rate | 5% | 6% | % |
+| Fixed O&M | $15 | $12 | $/kW-yr |
+| Variable O&M | $3 | $5 | $/MWh |
+| Start Cost | - | $50 | $/start |
+
+### 12.2 Renewables
+
+| Input | Solar | Wind | Units |
+|-------|-------|------|-------|
+| Capacity Factor | 25% | 38% | % |
+| Degradation | 0.5% | 0.3% | %/yr |
+| O&M | $15 | $40 | $/kW-yr |
+| Inverter Life | 15 | - | years |
+
+### 12.3 Market Prices
+
+| Market | Power ($/MWh) | Capacity ($/kW-yr) | Gas ($/MMBtu) |
+|--------|---------------|-------------------|---------------|
+| PJM | $45 | $100 | $3.50 |
+| ERCOT | $40 | $0 | $3.25 |
+| NYISO | $55 | $150 | $4.00 |
+| CAISO | $50 | $80 | $4.50 |
+| SPP | $35 | $50 | $3.00 |
+| MISO | $38 | $40 | $3.25 |
+| ISO-NE | $48 | $80 | $5.00 |
+
+### 12.4 Financing Defaults
+
+| Input | Merchant | Contracted | Units |
+|-------|----------|------------|-------|
+| Leverage | 55-60% | 65-75% | % |
+| Interest Rate | 6.5% | 5.5% | % |
+| Tenor | 5-7 | 7-15 | years |
+| Target DSCR | 1.25x | 1.35x | x |
+| DSRA | 6 | 6 | months |
+| Sweep % | 75% | 50% | % |
+
+### 12.5 Transaction Defaults
+
+| Input | Default | Notes |
+|-------|---------|-------|
+| Transaction Fees | 1.5% | of Entry EV |
+| Exit Multiple | Entry + 0.5x | if assets improving |
+| Exit Multiple | Entry | if assets stable |
+| Exit Multiple | Entry - 0.5x | if assets declining |
+| Hold Period | 7 | years (unless specified) |
+| Tax Rate | 25% | blended federal + state |
+
+### 12.6 When to Use Proxies
+
+**Use proxy if:**
+- Input not provided in case
+- Interviewer says "use your judgment"
+- Need to move forward to finish model
+
+**Don't use proxy if:**
+- Specific number given in case
+- Interviewer provides clarification
+- It's a key driver (ask first)
+
+**Always note in memo:**
+"[Input] assumed at [value] per market convention"
+
+---
+
+*End of Study Guide - Good luck on your interviews!*

@@ -412,18 +412,30 @@ Every Python build script must:
 
 **Staging:** `/mnt/user-data/outputs/` (sandbox only, not durable)
 
-**Durable delivery:** GitHub Releases preferred; fallback to `/deliverables/<tag>/`
+**Durable delivery:** GitHub repo at `/deliverables/<tag>/`
 
-**Always produce:**
-- `deliverables_bundle.zip` + all individual files
-- Update `OUTPUTS_INDEX.md` (latest landing page)
-- Append to `DELIVERABLES_CHANGELOG.md` (history)
+**On every run that produces deliverables:**
 
-**Always provide:**
-- Clickable URLs (not raw /mnt paths)
-- ZIP sha256
+1. **Build** to `/mnt/user-data/outputs/`
+2. **Copy** final files to `/deliverables/deliverables-YYYYMMDD-HHMM/`
+3. **Create** `deliverables_bundle.zip` in that folder
+4. **Update** these files:
+   - `STATE.md` — current commit, timestamp, file status
+   - `OUTPUTS_INDEX.md` — latest tag, download links
+   - `DELIVERABLES_CHANGELOG.md` — append entry with tag, changes, sha256
+5. **Commit** all changes
+6. **Push** to both `origin` and `github` remotes
+7. **Output** clickable GitHub URLs (not /mnt paths)
 
-**Landing page:** `OUTPUTS_INDEX.md` always points to latest drop.
+**GitHub remote setup:**
+```bash
+git remote add github https://${GITHUB_TOKEN}@github.com/aktbd/dcf-modeling.git
+```
+
+**Key files:**
+- `STATE.md` — Bridge file for Claude.ai to read current state
+- `OUTPUTS_INDEX.md` — Landing page pointing to latest deliverables
+- `DELIVERABLES_CHANGELOG.md` — Append-only version history
 
 **Precedence:** `Explicit user instruction > Current prompt > CLAUDE.md`
 
@@ -439,6 +451,7 @@ Every Python build script must:
 | 1.1 | 2026-01-20 | Added delivery protocol (Section 12) |
 | 1.2 | 2026-01-20 | Simplified delivery contract, added link verification |
 | 1.3 | 2026-01-20 | Durable delivery via repo; OUTPUTS_INDEX.md as landing page |
+| 1.4 | 2026-01-20 | Added GitHub bridge protocol; STATE.md as sync file |
 
 ---
 

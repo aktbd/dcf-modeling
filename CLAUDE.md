@@ -443,7 +443,153 @@ git remote add github https://${GITHUB_TOKEN}@github.com/aktbd/dcf-modeling.git
 
 ---
 
-## 13. VERSION HISTORY
+## 13. GOOGLE DRIVE DELIVERY (NOT CONFIGURED)
+
+**Status:** Not available in current environment.
+
+**Blockers identified:**
+- MCP server for Google Drive: Not installed
+- gcloud CLI: Not available or not authenticated
+- rclone: Not configured
+
+**To enable (user action required):**
+
+Option A - MCP Server (Preferred):
+```bash
+npm install -g @anthropic/mcp-server-gdrive
+# Then configure OAuth credentials
+```
+
+Option B - gcloud CLI:
+```bash
+gcloud auth login
+pip install google-api-python-client google-auth-oauthlib
+```
+
+Option C - rclone:
+```bash
+rclone config  # Interactive setup for Google Drive
+# Then: rclone copy file.xlsx gdrive:folder/
+```
+
+**Current workaround:** GitHub raw URLs for file delivery.
+
+---
+
+## 14. LESSONS LEARNED (Updated 2026-01-20)
+
+### Modeling Errors Encountered & Fixes
+
+#### 1. DSRA Circular Reference (CRITICAL)
+
+**Error:** DSRA Target in cash sweep models created circular dependency.
+
+```
+Circular chain:
+DSRA Target Y1 → debt_service_pre Y2 → beg_bal Y2 → end_bal Y1
+→ total_principal Y1 → cash_sweep Y1 → excess_cash Y1
+→ DSRA_funding Y1 → DSRA_target Y1 (CIRCULAR!)
+```
+
+**Root cause:** DSRA Target referenced `debt_service_pre` which depends on beginning balance, which depends on prior year's ending balance, which depends on cash sweep, which depends on DSRA funding.
+
+**Fix:** Added `scheduled_ds` row that calculates debt service using straight-line amortization only (independent of actual sweep):
+
+```python
+# ❌ WRONG: Creates circular reference
+formula = f"={next_col}{rows['debt_service_pre']}*$D${rows['dsra_months']}/12"
+
+# ✅ RIGHT: Uses scheduled_ds (deterministic, no circularity)
+row = 93; rows['scheduled_ds'] = row
+set_label(ws, row, "Scheduled DS (for DSRA)", "$mm", "Based on straight-line amort")
+for col in range(5, 15):
+    yr = col - 4
+    formula = f"=MAX(0,$D${rows['debt_amount']}-({yr}-1)*$D${rows['scheduled_principal']})*$D${rows['interest_rate']}+$D${rows['scheduled_principal']}"
+    apply_calc_style(ws, row, col, formula)
+
+# Then DSRA Target references scheduled_ds
+formula = f"={next_col}{rows['scheduled_ds']}*$D${rows['dsra_months']}/12"
+```
+
+**Applies to:** Cash sweep models (CCGT, Peaker, Midstream)
+**Does NOT apply to:** Sculpted debt models (Solar+BESS, Transmission) - their debt service is determined by CFADS/target_DSCR, independent of DSRA.
+
+#### 2. Validation Gap
+
+**Error:** Initial validation only checked for error *strings* in formulas, not computed values.
+
+```python
+# ❌ WRONG: Only catches literal error text
+if '#REF' in str(cell.value):
+    errors.append(cell)
+
+# ✅ RIGHT: Use formula evaluation library
+import formulas
+xl_model = formulas.ExcelModel().loads(filepath).finish()
+results = xl_model.calculate()  # Actually computes values
+```
+
+**Fix:** Installed `formulas` library and added compute-based validation.
+
+#### 3. Download Links
+
+**Error:** Initially provided sandbox filesystem paths instead of GitHub URLs.
+
+```
+❌ WRONG: /mnt/user-data/outputs/Model_1_CCGT.xlsx (404 for user)
+✅ RIGHT: https://github.com/aktbd/dcf-modeling/raw/branch/deliverables/file.xlsx
+```
+
+**Fix:** Always provide GitHub raw URLs for file downloads.
+
+### Validation Protocol (Pre-Delivery Checklist)
+
+1. **Build all models** with Python scripts
+2. **Formula evaluation test:**
+   ```python
+   import formulas
+   xl_model = formulas.ExcelModel().loads(filepath).finish()
+   results = xl_model.calculate()  # Must complete without error
+   ```
+3. **Structural check:**
+   - DSRA Target references `scheduled_ds` (not `debt_service_pre`) for cash sweep models
+   - No #REF, #NAME, #VALUE, #DIV/0 errors
+4. **Sanity check ranges:**
+   - DSCR: 1.2x - 2.5x
+   - Levered IRR: 12% - 25%
+   - Fuel cost (CCGT): $30-50mm
+5. **Verify download links** work (GitHub raw URLs)
+
+### Delivery Protocol (Working)
+
+1. Build to `/mnt/user-data/outputs/`
+2. Copy to `/deliverables/deliverables-YYYYMMDD-HHMM/`
+3. Create ZIP with `sha256sum`
+4. Update STATE.md, DELIVERABLES_CHANGELOG.md
+5. Commit and push to `origin` (and `github` if configured)
+6. Provide GitHub raw URLs (not filesystem paths)
+
+---
+
+## 15. SKILLS ASSESSMENT (2026-01-20)
+
+### Environment Audit
+
+| Resource | Status | Notes |
+|----------|--------|-------|
+| /mnt/skills/ | Not present | No skill files loaded |
+| ~/.claude/instructions.md | Not present | No global instructions |
+| CLAUDE.md (this file) | Present | Authoritative for this repo |
+
+### Assessment
+
+**No conflicting skills found.** This repository uses only the local CLAUDE.md for modeling standards.
+
+**Recommendation:** Keep CLAUDE.md as the single source of truth. No external skills to manage or reconcile.
+
+---
+
+## 16. VERSION HISTORY
 
 | Version | Date | Changes |
 |---------|------|---------|
@@ -452,6 +598,7 @@ git remote add github https://${GITHUB_TOKEN}@github.com/aktbd/dcf-modeling.git
 | 1.2 | 2026-01-20 | Simplified delivery contract, added link verification |
 | 1.3 | 2026-01-20 | Durable delivery via repo; OUTPUTS_INDEX.md as landing page |
 | 1.4 | 2026-01-20 | Added GitHub bridge protocol; STATE.md as sync file |
+| 1.5 | 2026-01-20 | Added Lessons Learned, Drive status, Skills assessment |
 
 ---
 

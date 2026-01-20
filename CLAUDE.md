@@ -443,36 +443,44 @@ git remote add github https://${GITHUB_TOKEN}@github.com/aktbd/dcf-modeling.git
 
 ---
 
-## 13. GOOGLE DRIVE DELIVERY (NOT CONFIGURED)
+## 13. FILE DELIVERY
 
-**Status:** Not available in current environment.
+### Primary Method: GitHub Raw URLs (Working)
 
-**Blockers identified:**
-- MCP server for Google Drive: Not installed
-- gcloud CLI: Not available or not authenticated
-- rclone: Not configured
+This sandbox environment has **no external network access** - cannot reach package repositories, OAuth endpoints, or external services. Google Drive integration is not possible here.
 
-**To enable (user action required):**
-
-Option A - MCP Server (Preferred):
-```bash
-npm install -g @anthropic/mcp-server-gdrive
-# Then configure OAuth credentials
+**Working delivery workflow:**
+```
+1. Build files to /mnt/user-data/outputs/
+2. Copy to /deliverables/<tag>/
+3. Commit and push to GitHub
+4. Provide raw URLs for downloads
 ```
 
-Option B - gcloud CLI:
-```bash
-gcloud auth login
-pip install google-api-python-client google-auth-oauthlib
+**URL pattern:**
+```
+https://github.com/aktbd/dcf-modeling/raw/<branch>/deliverables/<tag>/<file>
 ```
 
-Option C - rclone:
-```bash
-rclone config  # Interactive setup for Google Drive
-# Then: rclone copy file.xlsx gdrive:folder/
+**Example:**
+```
+https://github.com/aktbd/dcf-modeling/raw/claude/infrastructure-pe-interview-prep-K9DUF/deliverables/deliverables-20260120-0030/Model_1_CCGT.xlsx
 ```
 
-**Current workaround:** GitHub raw URLs for file delivery.
+### Alternative: Google Drive (Requires Network Access)
+
+If running in an environment with network access, configure rclone:
+```bash
+sudo apt install rclone
+rclone config  # Interactive OAuth setup
+rclone copy file.xlsx gdrive:folder/
+rclone link gdrive:folder/file.xlsx  # Get shareable link
+```
+
+**Current sandbox blockers:**
+- Network blocked: `host_not_allowed` for external URLs
+- Cannot install packages from apt/pip/npm
+- Cannot complete OAuth flows
 
 ---
 
@@ -599,6 +607,7 @@ results = xl_model.calculate()  # Actually computes values
 | 1.3 | 2026-01-20 | Durable delivery via repo; OUTPUTS_INDEX.md as landing page |
 | 1.4 | 2026-01-20 | Added GitHub bridge protocol; STATE.md as sync file |
 | 1.5 | 2026-01-20 | Added Lessons Learned, Drive status, Skills assessment |
+| 1.6 | 2026-01-20 | Confirmed GitHub URLs as primary delivery (sandbox has no network) |
 
 ---
 

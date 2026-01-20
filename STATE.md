@@ -9,7 +9,7 @@
 |-------|-------|
 | Branch | `claude/infrastructure-pe-interview-prep-K9DUF` |
 | Latest Tag | `deliverables-20260120-0030` |
-| Last Updated | 2026-01-20 02:30 UTC |
+| Last Updated | 2026-01-20 02:45 UTC |
 
 ## Deliverables
 
@@ -43,6 +43,8 @@
 
 ## Recent Activity
 
+- 2026-01-20 02:45: Formula cleanup - replaced /1000000000 with /1E9 for readability
+- 2026-01-20 02:35: Confirmed GitHub URLs as primary delivery (sandbox network blocked)
 - 2026-01-20 02:30: Added retrospective, Drive status, skills audit to CLAUDE.md v1.5
 - 2026-01-20 02:15: Fixed circular reference in DSRA, regenerated all models and drills
 - 2026-01-20 02:00: Initial formula verification identified circular reference issue

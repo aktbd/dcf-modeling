@@ -433,7 +433,7 @@ def build_peaker_model(output_path):
     row = 70; rows['fuel_cost'] = row
     set_label(ws, row, "Fuel Cost", "$mm", "Gen × HR × Gas / 1B")
     for col in range(5, 15):
-        formula = f"=$D${rows['generation']}*$D${rows['heat_rate']}*{col_letter(col)}{rows['gas_price']}/1000000000"
+        formula = f"=$D${rows['generation']}*$D${rows['heat_rate']}*{col_letter(col)}{rows['gas_price']}/1E9"
         apply_calc_style(ws, row, col, formula)
         ws.cell(row=row, column=col).number_format = CURRENCY_FORMAT
 

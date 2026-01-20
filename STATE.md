@@ -9,17 +9,17 @@
 |-------|-------|
 | Branch | `claude/infrastructure-pe-interview-prep-K9DUF` |
 | Latest Tag | `deliverables-20260120-0030` |
-| Last Updated | 2026-01-20 03:45 UTC |
+| Last Updated | 2026-01-20 04:00 UTC |
 
 ## Deliverables
 
 | Asset | Status | Validation |
 |-------|--------|------------|
-| Model_1_CCGT.xlsx | ✓ Verified | No circular refs, DSRA uses scheduled_ds |
-| Model_2_Peaker.xlsx | ✓ Verified | No circular refs, DSRA uses scheduled_ds |
-| Model_3_SolarBESS.xlsx | ✓ Verified | No circular refs, sculpted debt (no sweep) |
-| Model_4_Transmission.xlsx | ✓ Verified | No circular refs, sculpted debt (no sweep) |
-| Model_5_Midstream.xlsx | ✓ Verified | No circular refs, DSRA uses scheduled_ds |
+| Model_1_CCGT.xlsx | ✓ Verified | Sheets: [Model, IC Memo], DSRA uses scheduled_ds |
+| Model_2_Peaker.xlsx | ✓ Verified | Sheets: [Model, IC Memo], DSRA uses scheduled_ds |
+| Model_3_SolarBESS.xlsx | ✓ Verified | Sheets: [Model, IC Memo], sculpted debt |
+| Model_4_Transmission.xlsx | ✓ Verified | Sheets: [Model, IC Memo], sculpted debt |
+| Model_5_Midstream.xlsx | ✓ Verified | Sheets: [Model, IC Memo], DSRA uses scheduled_ds |
 | Drill versions (5) | ✓ Verified | Regenerated with fixed models |
 | IC Memos (5) | ✓ Valid | DOCX format |
 | Reference Materials | ✓ Valid | Template, CheatSheet, Manifesto |
@@ -50,6 +50,7 @@
 
 ## Recent Activity
 
+- 2026-01-20 04:00: Added IC Memo tabs to all 5 Model files (content from DOCX memos)
 - 2026-01-20 03:45: Full sanity check - all models validated, DSCR 1.29x confirmed
 - 2026-01-20 03:30: Fixed Column C text format (removed "=" prefix breaking parser)
 - 2026-01-20 03:15: Added formula comments, IC Memo tabs, Quick Reference sheet

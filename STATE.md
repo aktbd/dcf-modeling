@@ -9,18 +9,18 @@
 |-------|-------|
 | Branch | `claude/infrastructure-pe-interview-prep-K9DUF` |
 | Latest Tag | `deliverables-20260120-0030` |
-| Last Updated | 2026-01-20 05:00 UTC |
+| Last Updated | 2026-01-20 05:30 UTC |
 
 ## Deliverables
 
 | Asset | Status | Validation |
 |-------|--------|------------|
-| Model_1_CCGT.xlsx | ✓ Verified | Sheets: [Model, IC Memo], DSRA uses scheduled_ds |
-| Model_2_Peaker.xlsx | ✓ Verified | Sheets: [Model, IC Memo], DSRA uses scheduled_ds |
-| Model_3_SolarBESS.xlsx | ✓ Verified | Sheets: [Model, IC Memo], sculpted debt |
-| Model_4_Transmission.xlsx | ✓ Verified | Sheets: [Model, IC Memo], sculpted debt |
-| Model_5_Midstream.xlsx | ✓ Verified | Sheets: [Model, IC Memo], DSRA uses scheduled_ds |
-| Drill versions (5) | ✓ Verified | Regenerated with fixed models |
+| Model_1_CCGT.xlsx | ✓ Verified | [README, Case Prompt, IC Memo, Model], MINIFS |
+| Model_2_Peaker.xlsx | ✓ Verified | [README, Case Prompt, IC Memo, Model], MINIFS |
+| Model_3_SolarBESS.xlsx | ✓ Verified | [README, Case Prompt, IC Memo, Model], MINIFS |
+| Model_4_Transmission.xlsx | ✓ Verified | [README, Case Prompt, IC Memo, Model], MINIFS |
+| Model_5_Midstream.xlsx | ✓ Verified | [README, Case Prompt, IC Memo, Model], MINIFS |
+| Drill versions (5) | ✓ Verified | [Intuition Guide, Case Prompt, IC Memo, Model], MINIFS |
 | IC Memos (5) | ✓ Valid | DOCX format |
 | Reference Materials | ✓ Valid | Template, CheatSheet, Manifesto |
 
@@ -50,6 +50,7 @@
 
 ## Recent Activity
 
+- 2026-01-20 05:30: Added README, Case Prompt tabs; MINIFS for Min DSCR (commit 77efe81)
 - 2026-01-20 05:00: Re-verified ZIP with extraction test, force pushed (commit 1877df2)
 - 2026-01-20 04:45: Fixed ZIP - verified IC Memo tabs present by extraction test
 - 2026-01-20 04:00: Added IC Memo tabs to all 5 Model files (content from DOCX memos)

@@ -164,6 +164,53 @@ Essential infrastructure for production. No commodity exposure (fee-based). Tied
 
 ---
 
+
+---
+
+## Wind Farm
+
+### What It Does
+Onshore or offshore wind turbines generating electricity from wind energy. Modern turbines: 2-5 MW each, 80-150m hub height.
+
+### Revenue Drivers
+- **PPA revenue:** Contracted $/MWh for electricity output
+- **Merchant revenue:** Wholesale market prices (post-PPA)
+- **PTC:** Production Tax Credit ($27.50/MWh for 10 years from COD)
+
+### Why It Matters
+Mature, proven renewable technology. PTC creates significant tax shield. Complements solar (wind often blows at night). Essential for grid decarbonization.
+
+### What Makes a Good Asset
+- Capacity factor >35% (good wind resource)
+- Long-term PPA with IG offtaker
+- PTC eligibility secured
+- Modern turbines (<10 years old)
+- Strong O&M track record
+
+### What Kills Deals
+- Low CF location (<30%)
+- Merchant exposure without hedge
+- Aging turbines (gearbox risk)
+- Curtailment risk (transmission)
+- Weak offtaker credit
+
+### Key Modeling Notes
+- **Generation:** Capacity × CF × 8,760 × (1-Degradation)^year
+- **PTC:** Tax CREDIT, not revenue. Applied = MIN(Gross PTC, Tax Owed)
+- **Degradation:** 0.2-0.5%/yr (blade erosion)
+- **O&M:** $30-50/kW-yr (higher than solar)
+- **Debt:** Sculpted (contracted revenue)
+
+### PTC Mechanics (CRITICAL)
+```
+Pre-PTC Tax = MAX(0, EBIT) × Tax Rate
+Gross PTC = Generation × $27.50/MWh
+PTC Applied = MIN(Gross PTC, Pre-PTC Tax)  ← CANNOT create negative taxes!
+Net Tax = Pre-PTC Tax - PTC Applied
+```
+
+---
+
 # 3. REGIONAL MARKET CONSIDERATIONS
 
 ## PJM (Mid-Atlantic)
@@ -544,3 +591,101 @@ A: Difference between hub price and node price due to transmission congestion. G
 ---
 
 *Good luck! Remember: accuracy > speed. A working model with simple structure beats a complex model with errors.*
+
+
+# MARGIN ANALYSIS (Thermal Plants)
+
+## Spark Spread (Quick Method)
+```
+Spark Spread ($/MWh) = Power Price - (Heat Rate × Gas Price / 1,000)
+```
+
+**Example:** Power=$50, Gas=$5, HR=7,000
+```
+Spark = $50 - (7,000 × $5 / 1,000) = $50 - $35 = $15/MWh
+```
+
+## Market Heat Rate (Trader Method)
+```
+RMHR (Btu/kWh) = Power Price / Gas Price × 1,000
+```
+
+**Interpretation:**
+- RMHR > Plant HR → "In the money" → Dispatch
+- RMHR < Plant HR → "Out of money" → Don't run
+
+**Same Example:**
+```
+RMHR = $50 / $5 × 1,000 = 10,000 Btu/kWh
+Since 10,000 > 7,000 → Profitable
+Margin = (10,000 - 7,000) × $5 / 1,000 = $15/MWh ✓
+```
+
+**Key Insight:** Same answer, different framing. Use Spark Spread in model; use RMHR in interview discussions.
+
+---
+
+
+
+# PROXY ASSUMPTIONS REFERENCE
+
+## Thermal Power Plants
+| Parameter | CCGT | Peaker |
+|-----------|------|--------|
+| Heat Rate | 6,500-7,500 | 9,500-11,000 | Btu/kWh |
+| Capacity Factor | 45-65% | 5-15% (dispatch hrs) |
+| Forced Outage Rate | 4-6% | 5-8% |
+| Fixed O&M | $12-18/kW-yr | $8-15/kW-yr |
+| Variable O&M | $2-4/MWh | $3-6/MWh |
+
+## Renewables
+| Parameter | Solar | Wind |
+|-----------|-------|------|
+| Capacity Factor | 20-30% | 30-45% |
+| Degradation | 0.4-0.6%/yr | 0.2-0.5%/yr |
+| O&M | $10-20/kW-yr | $30-50/kW-yr |
+| PPA Price | $25-45/MWh | $30-50/MWh |
+
+## Power Prices ($/MWh)
+| Market | Range | Notes |
+|--------|-------|-------|
+| PJM | $35-50 | Capacity market |
+| ERCOT | $30-45 | Energy-only, volatile |
+| NYISO | $40-70 | Zone J premium |
+| CAISO | $45-75 | + carbon (~$35/ton) |
+| SPP/MISO | $25-40 | Wind-rich |
+
+## Capacity Prices ($/kW-yr)
+| Market | Range | Notes |
+|--------|-------|-------|
+| PJM | $50-150 | Varies by zone |
+| NYISO Zone J | $100-200 | Scarcity premium |
+| ISO-NE | $40-100 | FCM auction |
+| ERCOT | $0 | Energy-only market |
+
+## Gas Prices
+| Index | Range |
+|-------|-------|
+| Henry Hub | $2.50-4.00/MMBtu |
+| + Basis (regional) | $0.25-1.00 |
+
+## Financing Defaults
+| Parameter | Range | Notes |
+|-----------|-------|-------|
+| Leverage | 55-70% | Contracted higher |
+| Interest Rate | 5.5-7.0% | SOFR + 250-350bp |
+| Tenor | 5-7 years | Matches hold |
+| DSCR Target | 1.25-1.35x | Merchant |
+| | 1.35-1.45x | Contracted |
+| DSRA | 6 months DS | |
+| Cash Sweep | 50-75% | |
+
+## Transaction
+| Parameter | Default |
+|-----------|---------|
+| Fees | 1.0-2.0% of EV |
+| Exit Multiple | Same or +0.5x vs entry |
+| Hold Period | 5-7 years |
+| Tax Rate | 25% |
+
+---

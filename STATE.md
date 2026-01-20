@@ -8,21 +8,23 @@
 | Field | Value |
 |-------|-------|
 | Branch | `claude/infrastructure-pe-interview-prep-K9DUF` |
-| Latest Tag | `deliverables-20260120-0730` |
-| Last Updated | 2026-01-20 07:30 UTC |
+| Latest Tag | `deliverables-20260120-0900` |
+| Last Updated | 2026-01-20 09:00 UTC |
 
 ## Deliverables
 
 | Asset | Status | Validation |
 |-------|--------|------------|
-| Model_1_CCGT.xlsx | ✓ Verified | [README, Case Prompt, IC Memo, Model_Quick, Model_Standard, Model_Full] |
-| Model_2_Peaker.xlsx | ✓ Verified | [README, Case Prompt, IC Memo, Model_Quick, Model_Standard, Model_Full] |
-| Model_3_SolarBESS.xlsx | ✓ Verified | [README, Case Prompt, IC Memo, Model_Quick, Model_Standard, Model_Full] |
-| Model_4_Transmission.xlsx | ✓ Verified | [README, Case Prompt, IC Memo, Model_Quick, Model_Standard, Model_Full] |
-| Model_5_Midstream.xlsx | ✓ Verified | [README, Case Prompt, IC Memo, Model_Quick, Model_Standard, Model_Full] |
-| Drill versions (5) | ✓ Verified | [Intuition Guide, Case Prompt, IC Memo, Model_Quick, Model_Standard, Model_Full] |
-| IC Memos (5) | ✓ Valid | DOCX format |
-| Reference Materials | ✓ Valid | Template, CheatSheet, Manifesto |
+| Model_1_CCGT.xlsx | ✓ Verified | 6 tabs + Spark Spread + Control Panel |
+| Model_2_Peaker.xlsx | ✓ Verified | 6 tabs + Spark Spread + Control Panel |
+| Model_3_SolarBESS.xlsx | ✓ Verified | 6 tabs + Control Panel + Sculpt transparency |
+| Model_4_Transmission.xlsx | ✓ Verified | 6 tabs + Control Panel + Sculpt transparency |
+| Model_5_Midstream.xlsx | ✓ Verified | 6 tabs + Control Panel |
+| **Model_6_Wind.xlsx** | ✓ NEW | 6 tabs + PTC mechanics + Sculpted debt |
+| Drill versions (6) | ✓ Verified | All 6 assets with 6 tabs each |
+| IC Memos (6) | ✓ Valid | DOCX format (Wind added) |
+| **Lotus_Study_Guide.md** | ✓ NEW | Deep conceptual explanations |
+| Reference Materials | ✓ Valid | Template, CheatSheet (updated), Manifesto |
 
 **Download:** [deliverables_bundle.zip](https://github.com/aktbd/dcf-modeling/raw/claude/infrastructure-pe-interview-prep-K9DUF/deliverables/deliverables-20260120-0030/deliverables_bundle.zip)
 
@@ -73,7 +75,8 @@ All Model and Drill files now have:
 
 ## Recent Activity
 
-- 2026-01-20 07:30: **3-Tab Structure**: Model_Quick, Model_Standard, Model_Full + Control Panel + Cold Start Workflow
+- 2026-01-20 09:00: **Final Update**: Wind model, Study Guide, Spark Spread, enhanced Control Panel, Proxy tables
+- 2026-01-20 07:30: 3-Tab Structure: Model_Quick, Model_Standard, Model_Full + Control Panel + Cold Start Workflow
 - 2026-01-20 06:00: Critical audit fixes: Midstream *1000, Transmission S&U, Solar MAX(0) (commit d9f8b1f)
 - 2026-01-20 05:30: Added README, Case Prompt tabs; MINIFS for Min DSCR (commit 77efe81)
 - 2026-01-20 05:00: Re-verified ZIP with extraction test, force pushed (commit 1877df2)

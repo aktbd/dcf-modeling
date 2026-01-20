@@ -9,7 +9,7 @@
 |-------|-------|
 | Branch | `claude/infrastructure-pe-interview-prep-K9DUF` |
 | Latest Tag | `deliverables-20260120-0030` |
-| Last Updated | 2026-01-20 04:00 UTC |
+| Last Updated | 2026-01-20 04:45 UTC |
 
 ## Deliverables
 
@@ -24,7 +24,7 @@
 | IC Memos (5) | ✓ Valid | DOCX format |
 | Reference Materials | ✓ Valid | Template, CheatSheet, Manifesto |
 
-**Download:** [deliverables-20260120-0030.zip](https://github.com/aktbd/dcf-modeling/raw/claude/infrastructure-pe-interview-prep-K9DUF/deliverables/deliverables-20260120-0030.zip)
+**Download:** [deliverables_bundle.zip](https://github.com/aktbd/dcf-modeling/raw/claude/infrastructure-pe-interview-prep-K9DUF/deliverables/deliverables-20260120-0030/deliverables_bundle.zip)
 
 ## Formula Verification (2026-01-20 03:45)
 
@@ -50,6 +50,7 @@
 
 ## Recent Activity
 
+- 2026-01-20 04:45: Fixed ZIP - verified IC Memo tabs present by extraction test
 - 2026-01-20 04:00: Added IC Memo tabs to all 5 Model files (content from DOCX memos)
 - 2026-01-20 03:45: Full sanity check - all models validated, DSCR 1.29x confirmed
 - 2026-01-20 03:30: Fixed Column C text format (removed "=" prefix breaking parser)

@@ -410,24 +410,20 @@ Every Python build script must:
 
 ## 12. DEFAULT DELIVERY CONTRACT
 
-**Output location:** `/mnt/user-data/outputs/`
+**Staging:** `/mnt/user-data/outputs/` (sandbox only, not durable)
+
+**Durable delivery:** GitHub Releases preferred; fallback to `/deliverables/<tag>/`
 
 **Always produce:**
-- `deliverables_bundle.zip` (all files)
-- `MANIFEST.md` (index + relationships)
+- `deliverables_bundle.zip` + all individual files
+- Update `OUTPUTS_INDEX.md` (latest landing page)
+- Append to `DELIVERABLES_CHANGELOG.md` (history)
 
 **Always provide:**
-- Individual download links for each file
-- One ZIP download link
-- Verify at least ZIP + 3 files before posting
+- Clickable URLs (not raw /mnt paths)
+- ZIP sha256
 
-**Version control:**
-- Commit text files (MANIFEST.md) by default
-- Do NOT commit binaries unless explicitly told "commit binaries"
-
-**If links fail or expire:**
-- Commit a pointer index to repo (not binaries)
-- OR create GitHub Release draft with attachments
+**Landing page:** `OUTPUTS_INDEX.md` always points to latest drop.
 
 **Precedence:** `Explicit user instruction > Current prompt > CLAUDE.md`
 
@@ -442,6 +438,7 @@ Every Python build script must:
 | 1.0 | 2026-01-19 | Initial creation - modeling standards |
 | 1.1 | 2026-01-20 | Added delivery protocol (Section 12) |
 | 1.2 | 2026-01-20 | Simplified delivery contract, added link verification |
+| 1.3 | 2026-01-20 | Durable delivery via repo; OUTPUTS_INDEX.md as landing page |
 
 ---
 

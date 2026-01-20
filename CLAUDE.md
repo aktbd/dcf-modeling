@@ -408,43 +408,30 @@ Every Python build script must:
 
 ---
 
-## 12. DELIVERY PROTOCOL
+## 12. DEFAULT DELIVERY CONTRACT
 
-### Output Directory
-All final deliverables must be written to:
-```
-/mnt/user-data/outputs/
-```
+**Output location:** `/mnt/user-data/outputs/`
 
-### End-of-Run Requirements
-At the end of every run that produces files:
-1. Provide an index of deliverables (filename + 1-line purpose)
-2. Provide individual downloadable links for each file
-3. Create ONE bundled ZIP: `deliverables_bundle.zip`
-4. Create/update `MANIFEST.md` listing files, purpose, and relationships
+**Always produce:**
+- `deliverables_bundle.zip` (all files)
+- `MANIFEST.md` (index + relationships)
 
-### Version Control Defaults
-- **Commit** MANIFEST.md and other small text files by default
-- **Do NOT auto-commit** large binaries (.xlsx, .docx, .pdf, .zip)
-- Only commit binaries if explicitly requested with "commit binaries"
+**Always provide:**
+- Individual download links for each file
+- One ZIP download link
+- Verify at least ZIP + 3 files before posting
 
-### Protocol Flexibility
-This delivery protocol represents:
-- Default behavior
-- Strong guidance
-- NOT an absolute constraint
+**Version control:**
+- Commit text files (MANIFEST.md) by default
+- Do NOT commit binaries unless explicitly told "commit binaries"
 
-Deviations are permitted when:
-- A request has unique scope
-- Conventions would be counterproductive
-- Work is exploratory or conceptual
+**If links fail or expire:**
+- Commit a pointer index to repo (not binaries)
+- OR create GitHub Release draft with attachments
 
-When deviating: explain briefly, proceed with best judgment, resume defaults afterward.
+**Precedence:** `Explicit user instruction > Current prompt > CLAUDE.md`
 
-### Precedence Rules
-```
-Explicit user instruction > Current prompt > CLAUDE.md
-```
+*These are defaults, not laws. Deviate when sensible; resume defaults afterward.*
 
 ---
 
@@ -454,6 +441,7 @@ Explicit user instruction > Current prompt > CLAUDE.md
 |---------|------|---------|
 | 1.0 | 2026-01-19 | Initial creation - modeling standards |
 | 1.1 | 2026-01-20 | Added delivery protocol (Section 12) |
+| 1.2 | 2026-01-20 | Simplified delivery contract, added link verification |
 
 ---
 

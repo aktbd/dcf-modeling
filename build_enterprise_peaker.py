@@ -649,6 +649,9 @@ def build_model():
     rows['tr2_end'] = tr2_end_row
     set_label(ws, tr2_end_row, "Tr2 Ending Balance")
     ws.cell(row=tr2_end_row, column=2).value = "$"
+    # Y0 ending balance = Y0 beginning balance (no debt service in Y0)
+    apply_calc_style(ws, tr2_end_row, 4, f'=D{tr2_beg_row}')
+    ws.cell(row=tr2_end_row, column=4).number_format = CURRENCY_FMT
     for col in range(5, 25):
         c = col_letter(col)
         formula = f'=MAX(0,{c}{tr2_beg_row}-{c}{tr2_principal_row})'
@@ -765,6 +768,9 @@ def build_model():
     rows['tr1_end'] = tr1_end_row
     set_label(ws, tr1_end_row, "Tr1 Ending Balance")
     ws.cell(row=tr1_end_row, column=2).value = "$"
+    # Y0 ending balance = Y0 beginning balance (no debt service in Y0)
+    apply_calc_style(ws, tr1_end_row, 4, f'=D{tr1_beg_row}')
+    ws.cell(row=tr1_end_row, column=4).number_format = CURRENCY_FMT
     for col in range(5, 25):
         c = col_letter(col)
         formula = f'=MAX(0,{c}{tr1_beg_row}-{c}{tr1_principal_row})'
@@ -1035,12 +1041,14 @@ def build_model():
 
     rows['qa_min_dscr'] = row
     set_label(ws, row, "MIN(DSCR) >= 1.40")
-    apply_output_style(ws, row, 4, f'=IF($D${rows["min_dscr"]}>=1.4,"PASS","FAIL")')
+    # Use ROUND to avoid floating point precision issues at boundary
+    apply_output_style(ws, row, 4, f'=IF(ROUND($D${rows["min_dscr"]},4)>=1.4,"PASS","FAIL")')
     row += 1
 
     rows['qa_aaf'] = row
     set_label(ws, row, "With EAF=98.5%, AAF=1.00")
-    apply_output_style(ws, row, 4, f'=IF(E{rows["aaf"]}=1,"PASS","FAIL")')
+    # Use ROUND to avoid floating point precision issues
+    apply_output_style(ws, row, 4, f'=IF(ROUND(E{rows["aaf"]},4)=1,"PASS","FAIL")')
     row += 1
 
     rows['qa_starts'] = row

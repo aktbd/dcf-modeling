@@ -8,8 +8,8 @@
 | Field | Value |
 |-------|-------|
 | Branch | `claude/infrastructure-pe-interview-prep-K9DUF` |
-| Latest Tag | `deliverables-20260120-1400` |
-| Last Updated | 2026-01-21 14:00 UTC |
+| Latest Tag | `deliverables-20260120-1500` |
+| Last Updated | 2026-01-21 15:00 UTC |
 
 ## Deliverables
 
@@ -27,6 +27,24 @@
 | Reference Materials | ✓ Valid | Template, CheatSheet (updated), Manifesto |
 
 **Download:** [deliverables_bundle.zip](https://github.com/aktbd/dcf-modeling/raw/claude/infrastructure-pe-interview-prep-K9DUF/deliverables/deliverables-20260120-0030/deliverables_bundle.zip)
+
+## QA CHECK FIX: Debt Payoff References (2026-01-21 15:00)
+
+**Problem:** QA Debt Payoff checks in all models referenced wrong rows (taxes, CFADS, EBIT) instead of Ending Balance.
+
+| Model | Before | After |
+|-------|--------|-------|
+| Peaker | K91 (Taxes) | K103 (Ending Balance) |
+| SolarBESS | N81 (Taxes) | N91 (Ending Balance) |
+| Transmission | N84 (EBIT) | N94 (Ending Balance) |
+| Midstream | I78 (CFADS) | I88 (Ending Balance) |
+| Wind | E90+D59 (Interest+Header) | E93+D62 (EndBal+Tenor) |
+
+All fixes propagated to Drill files.
+
+**ZIP:** SHA256 `915ecaff3f965a2a62a9259822e076f1e54152056867d379ca4cc83e738f440a`
+
+---
 
 ## ROUND 3 FIX: Label/Reference Consistency (2026-01-21 13:00)
 

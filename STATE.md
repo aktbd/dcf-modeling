@@ -8,8 +8,8 @@
 | Field | Value |
 |-------|-------|
 | Branch | `claude/infrastructure-pe-interview-prep-K9DUF` |
-| Latest Tag | `deliverables-20260120-1200` |
-| Last Updated | 2026-01-21 12:00 UTC |
+| Latest Tag | `deliverables-20260120-1300` |
+| Last Updated | 2026-01-21 13:00 UTC |
 
 ## Deliverables
 
@@ -27,6 +27,32 @@
 | Reference Materials | ✓ Valid | Template, CheatSheet (updated), Manifesto |
 
 **Download:** [deliverables_bundle.zip](https://github.com/aktbd/dcf-modeling/raw/claude/infrastructure-pe-interview-prep-K9DUF/deliverables/deliverables-20260120-0030/deliverables_bundle.zip)
+
+## ROUND 3 FIX: Label/Reference Consistency (2026-01-21 13:00)
+
+**4 Minor Fixes:**
+
+| Issue | File | Before | After |
+|-------|------|--------|-------|
+| Unlevered labels mismatched | Model_5_Midstream | R127='Unlevered Cash Flow' + IRR formula | R127='Unlevered IRR' |
+| | | R128='Unlevered IRR' + MOIC formula | R128='Unlevered MOIC' |
+| S&U Audit Strip wrong refs | Model_6_Wind | R15 refs D111/D116 (Purchase/Header) | R15 refs D114/D119 (Uses/Sources) |
+| Missing DRILL MODE | Drill_1_CCGT | No note, formulas not blanked | DRILL MODE + 202 cells blanked |
+| Missing DRILL MODE | Drill_5_Midstream | No note, formulas not blanked | DRILL MODE + 212 cells blanked |
+
+**Propagated to Drill files:**
+- Drill_5_Midstream: Fixed Unlevered labels (R126-R128)
+- Drill_6_Wind: Fixed R15 audit strip formula
+
+**Verified:**
+- Midstream R127 label: 'Unlevered IRR' ✓
+- Midstream R128 label: 'Unlevered MOIC' ✓
+- Wind R15 formula: `=IF(ABS(D114-D119)<0.01,"PASS","FAIL")` ✓
+- All 6 Drills have DRILL MODE note ✓
+
+**ZIP Regenerated:** 31 files, SHA256: `24e52549fa994e7a2b8e62fabac6ea8ae4a767f05e9c9f694959569d48bac293`
+
+---
 
 ## FINAL FIX: Circular Reference & Formula Errors (2026-01-21 12:00)
 
@@ -162,6 +188,7 @@ All Model and Drill files now have:
 
 ## Recent Activity
 
+- 2026-01-21 13:00: **ROUND 3 FIX**: Fixed Midstream Unlevered labels, Wind audit strip refs, Drill blanking
 - 2026-01-21 12:00: **FINAL FIX**: Resolved CCGT circular reference + Midstream Taxes/CapEx formula confusion
 - 2026-01-21 11:00: **CRITICAL FIX**: Rewired all formula references in 6 Models + 6 Drills (commit faa4752)
 - 2026-01-20 10:00: **Final Polish**: Drill blanking, Unlevered IRR, IC Memo templates, Study Guide Sec 11-12 (commit 880bf1a)

@@ -8,8 +8,8 @@
 | Field | Value |
 |-------|-------|
 | Branch | `claude/infrastructure-pe-interview-prep-K9DUF` |
-| Latest Tag | `deliverables-20260120-1000` |
-| Last Updated | 2026-01-20 10:00 UTC |
+| Latest Tag | `deliverables-20260120-1100` |
+| Last Updated | 2026-01-21 11:00 UTC |
 
 ## Deliverables
 
@@ -27,6 +27,30 @@
 | Reference Materials | ✓ Valid | Template, CheatSheet (updated), Manifesto |
 
 **Download:** [deliverables_bundle.zip](https://github.com/aktbd/dcf-modeling/raw/claude/infrastructure-pe-interview-prep-K9DUF/deliverables/deliverables-20260120-0030/deliverables_bundle.zip)
+
+## CRITICAL FIX: Formula Rewiring (2026-01-21 11:00)
+
+**Commit:** `faa4752` - CRITICAL FIX: Rewire all formula references in 6 Models + 6 Drills
+
+**Problem:** All absolute references (`$D$##`) were pointing to wrong cells due to row insertions during model development. Formulas like Interest were referencing Power Price instead of Interest Rate.
+
+**Fixed:**
+| Model | Key Fixes |
+|-------|-----------|
+| CCGT | Operating model, debt schedule, DSRA, S&U formulas |
+| Peaker | Generation (Dispatch Hours × Availability), debt, returns |
+| SolarBESS | ITC, sculpted debt, degradation formulas |
+| Transmission | Construction phase, COD Y3, RAB formulas |
+| Midstream | Volume growth/decline, fee revenue formulas |
+| Wind | PTC mechanics, sculpted debt formulas |
+
+**Validated:**
+- EBITDA formulas reference correct Revenue - Costs rows
+- IRR formulas use proper IRR() function on equity CF range
+- Interest = Beg Bal × Interest Rate (correct cell references)
+- S&U references correct Entry EV and Leverage inputs
+
+**ZIP Regenerated:** 23 files, SHA256: `ee469158ca15383d227cd9f20aba6a36706d26b1bc7db226d647fe77986344ac`
 
 ## Final Polish (2026-01-20 10:00)
 
@@ -96,6 +120,7 @@ All Model and Drill files now have:
 
 ## Recent Activity
 
+- 2026-01-21 11:00: **CRITICAL FIX**: Rewired all formula references in 6 Models + 6 Drills (commit faa4752)
 - 2026-01-20 10:00: **Final Polish**: Drill blanking, Unlevered IRR, IC Memo templates, Study Guide Sec 11-12 (commit 880bf1a)
 - 2026-01-20 09:00: **Final Update**: Wind model, Study Guide, Spark Spread, enhanced Control Panel, Proxy tables
 - 2026-01-20 07:30: 3-Tab Structure: Model_Quick, Model_Standard, Model_Full + Control Panel + Cold Start Workflow

@@ -8,8 +8,8 @@
 | Field | Value |
 |-------|-------|
 | Branch | `claude/infrastructure-pe-interview-prep-K9DUF` |
-| Latest Tag | `deliverables-20260120-1600` |
-| Last Updated | 2026-01-21 16:00 UTC |
+| Latest Tag | `deliverables-20260120-1700` |
+| Last Updated | 2026-01-21 17:00 UTC |
 
 ## Deliverables
 
@@ -28,22 +28,33 @@
 
 **Download:** [deliverables_bundle.zip](https://github.com/aktbd/dcf-modeling/raw/claude/infrastructure-pe-interview-prep-K9DUF/deliverables/deliverables-20260120-0030/deliverables_bundle.zip)
 
-## QA CHECK FIX: Min DSCR + Divider Cleanup (2026-01-21 16:00)
+## ARCHITECTURE FIX: Min DSCR Display in Audit Strip (2026-01-21 17:00)
 
-**Problem:** Min DSCR QA checks in Models 2-5 referenced empty D6 cell instead of actual DSCR rows.
+**Problem:** Models 1-5 had empty D6 cell. QA checks couldn't work because there was no Min DSCR value to reference.
 
-| Model | Before | After |
-|-------|--------|-------|
-| Peaker D24 | `=IF(D6>=1.25,...)` | `=IF(MINIFS(E104:K104,...)>=1.25,...)` |
-| SolarBESS D23 | `=IF(D6>=1.30,...)` | `=IF(MINIFS(E92:N92,...)>=1.30,...)` |
-| Transmission D23 | `=IF(D6>=1.35,...)` | `=IF(MINIFS(G95:N95,...)>=1.35,...)` |
-| Midstream D23 | `=IF(D6>=1.25,...)` | `=IF(MINIFS(E89:I89,...)>=1.25,...)` |
+**Solution:** Added "Display then Check" pattern (matching Model 6 Wind's correct architecture):
+- **R6 now displays Min DSCR value** using MINIFS formula
+- **QA check references D6** instead of computing inline
 
-**Also fixed:** Cleared garbage formulas from divider rows (D22/D21) in 10 files.
+| Model | D6 Formula | QA Check |
+|-------|------------|----------|
+| CCGT | `=IF(COUNTIF(E104:K104,">0")>0,MINIFS(...),0)` | `=IF(D6>=1.25,"PASS","FAIL")` |
+| Peaker | `=IF(COUNTIF(E104:K104,">0")>0,MINIFS(...),0)` | `=IF(D6>=1.25,"PASS","FAIL")` |
+| SolarBESS | `=IF(COUNTIF(E92:N92,">0")>0,MINIFS(...),0)` | `=IF(D6>=1.30,"PASS","FAIL")` |
+| Transmission | `=IF(COUNTIF(G95:N95,">0")>0,MINIFS(...),0)` | `=IF(D6>=1.35,"PASS","FAIL")` |
+| Midstream | `=IF(COUNTIF(E89:I89,">0")>0,MINIFS(...),0)` | `=IF(D6>=1.25,"PASS","FAIL")` |
 
-All fixes propagated to Drill files.
+**Benefit:** Users can now SEE the actual Min DSCR value AND whether it passes threshold.
 
-**ZIP:** SHA256 `318a4b92fa6c2f11918e08b7a2c70bab51ec91b6c0a478d90fb8f48fb6eb5d9b`
+All 10 Drill files updated to match.
+
+**ZIP:** SHA256 `3407b6094bb4033348840717c05ccdec1f2129895b0c74632dc542b99ebfb71c`
+
+---
+
+## Previous: Min DSCR + Divider Cleanup (2026-01-21 16:00)
+
+Cleared garbage formulas from divider rows (D22/D21) in 10 files.
 
 ---
 

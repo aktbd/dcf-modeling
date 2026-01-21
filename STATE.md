@@ -8,8 +8,8 @@
 | Field | Value |
 |-------|-------|
 | Branch | `claude/infrastructure-pe-interview-prep-K9DUF` |
-| Latest Tag | `deliverables-20260120-1100` |
-| Last Updated | 2026-01-21 11:00 UTC |
+| Latest Tag | `deliverables-20260120-1200` |
+| Last Updated | 2026-01-21 12:00 UTC |
 
 ## Deliverables
 
@@ -27,6 +27,48 @@
 | Reference Materials | ✓ Valid | Template, CheatSheet (updated), Manifesto |
 
 **Download:** [deliverables_bundle.zip](https://github.com/aktbd/dcf-modeling/raw/claude/infrastructure-pe-interview-prep-K9DUF/deliverables/deliverables-20260120-0030/deliverables_bundle.zip)
+
+## FINAL FIX: Circular Reference & Formula Errors (2026-01-21 12:00)
+
+**Problem 1: CCGT Circular Reference**
+- D143 (Exit Equity) referenced D142 (IRR) which depended on D141 which depended on D143
+- This created an unresolvable circular dependency
+
+**Fix:** Calculate Exit Equity independently:
+| Cell | Before | After |
+|------|--------|-------|
+| D139 | (unclear) | `=K86` (Exit EBITDA) |
+| D140 | (unclear) | `=D139*$D$30` (Exit EV) |
+| D144 | N/A | `=K103` (Exit Debt Balance) |
+| D145 | N/A | `=K111` (Exit DSRA Release) |
+| D143 | `=D140-D141+D142` (CIRCULAR) | `=D140-D144+D145` (NO circular ref) |
+| D142 | `=K111` (WRONG - DSRA) | `=IRR(D141:N141)` |
+
+**Problem 2: Midstream Taxes/CapEx Confusion**
+- Row 76 (labeled "Taxes") had CapEx formula: `=IF(1<=5,$D$44,0)`
+- CFADS formula referenced wrong rows
+
+**Fix:**
+| Row | Label | Before | After |
+|-----|-------|--------|-------|
+| 75 | EBIT | (unclear) | `=E72-$D$61` |
+| 76 | Taxes | `=IF(1<=5,$D$44,0)` | `=MAX(0,E75)*$D$55` |
+| 77 | Growth CapEx | (unclear) | `=IF(Year<=5,$D$44,0)` |
+| 78 | CFADS | `=E62-E66-E67` | `=E72-E76-E77` |
+| D104 | Purchase Price | `=$D$17` (75%) | `=$D$27` ($85mm) |
+| D123 | Levered IRR | `=D120-D121+D122` | `=IRR(D122:N122)` |
+
+**Verified Outputs:**
+- CCGT D142 (IRR): `=IRR(D141:N141)` ✓
+- CCGT D143 (Exit Equity): `=D140-D144+D145` (no circular ref) ✓
+- Midstream D104: `=$D$27` (Entry EV = $85mm) ✓
+- Midstream E76 (Taxes): `=MAX(0,E75)*$D$55` ✓
+- Midstream E78 (CFADS): `=E72-E76-E77` ✓
+- Midstream D123 (IRR): `=IRR(D122:N122)` ✓
+
+**ZIP Regenerated:** 23 files, SHA256: `bdd30cebb79ef7c2fe82fc2ccaa158ecde32e478b1a3dfdfad7697c5dc77bcf6`
+
+---
 
 ## CRITICAL FIX: Formula Rewiring (2026-01-21 11:00)
 
@@ -120,6 +162,7 @@ All Model and Drill files now have:
 
 ## Recent Activity
 
+- 2026-01-21 12:00: **FINAL FIX**: Resolved CCGT circular reference + Midstream Taxes/CapEx formula confusion
 - 2026-01-21 11:00: **CRITICAL FIX**: Rewired all formula references in 6 Models + 6 Drills (commit faa4752)
 - 2026-01-20 10:00: **Final Polish**: Drill blanking, Unlevered IRR, IC Memo templates, Study Guide Sec 11-12 (commit 880bf1a)
 - 2026-01-20 09:00: **Final Update**: Wind model, Study Guide, Spark Spread, enhanced Control Panel, Proxy tables

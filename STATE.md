@@ -8,8 +8,8 @@
 | Field | Value |
 |-------|-------|
 | Branch | `claude/infrastructure-pe-interview-prep-K9DUF` |
-| Latest Tag | `deliverables-20260120-1300` |
-| Last Updated | 2026-01-21 13:00 UTC |
+| Latest Tag | `deliverables-20260120-1400` |
+| Last Updated | 2026-01-21 14:00 UTC |
 
 ## Deliverables
 
@@ -50,7 +50,17 @@
 - Wind R15 formula: `=IF(ABS(D114-D119)<0.01,"PASS","FAIL")` ✓
 - All 6 Drills have DRILL MODE note ✓
 
-**ZIP Regenerated:** 31 files, SHA256: `24e52549fa994e7a2b8e62fabac6ea8ae4a767f05e9c9f694959569d48bac293`
+**Additional Fix (2026-01-21 14:00):**
+- Model_6_Wind R8 (Audit IRR): `=D128` → `=D131` (correct reference to IRR formula)
+- Model_6_Wind R9 (Audit MOIC): `=D129` → `=D132` (correct reference to MOIC formula)
+- Propagated to Drill_6_Wind
+
+**ZIP Regenerated:** 31 files, SHA256: `09aeff31b30cd0cca2728b04afc85daa11cd7132b63e1cab42a5f9bd92ade1e5`
+
+**Final Verification (all passed):**
+- ✓ 6 Models: All have IRR formulas, QA checks, no Excel errors
+- ✓ 6 Drills: All have DRILL MODE note, no Excel errors
+- ✓ Supporting files: Present and accessible
 
 ---
 

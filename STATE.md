@@ -8,8 +8,8 @@
 | Field | Value |
 |-------|-------|
 | Branch | `claude/infrastructure-pe-interview-prep-K9DUF` |
-| Latest Tag | `deliverables-20260120-1500` |
-| Last Updated | 2026-01-21 15:00 UTC |
+| Latest Tag | `deliverables-20260120-1600` |
+| Last Updated | 2026-01-21 16:00 UTC |
 
 ## Deliverables
 
@@ -27,6 +27,25 @@
 | Reference Materials | ✓ Valid | Template, CheatSheet (updated), Manifesto |
 
 **Download:** [deliverables_bundle.zip](https://github.com/aktbd/dcf-modeling/raw/claude/infrastructure-pe-interview-prep-K9DUF/deliverables/deliverables-20260120-0030/deliverables_bundle.zip)
+
+## QA CHECK FIX: Min DSCR + Divider Cleanup (2026-01-21 16:00)
+
+**Problem:** Min DSCR QA checks in Models 2-5 referenced empty D6 cell instead of actual DSCR rows.
+
+| Model | Before | After |
+|-------|--------|-------|
+| Peaker D24 | `=IF(D6>=1.25,...)` | `=IF(MINIFS(E104:K104,...)>=1.25,...)` |
+| SolarBESS D23 | `=IF(D6>=1.30,...)` | `=IF(MINIFS(E92:N92,...)>=1.30,...)` |
+| Transmission D23 | `=IF(D6>=1.35,...)` | `=IF(MINIFS(G95:N95,...)>=1.35,...)` |
+| Midstream D23 | `=IF(D6>=1.25,...)` | `=IF(MINIFS(E89:I89,...)>=1.25,...)` |
+
+**Also fixed:** Cleared garbage formulas from divider rows (D22/D21) in 10 files.
+
+All fixes propagated to Drill files.
+
+**ZIP:** SHA256 `318a4b92fa6c2f11918e08b7a2c70bab51ec91b6c0a478d90fb8f48fb6eb5d9b`
+
+---
 
 ## QA CHECK FIX: Debt Payoff References (2026-01-21 15:00)
 

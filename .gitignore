@@ -26,3 +26,12 @@ Thumbs.db
 *.csv
 dist/
 build/
+
+# Security — prevent accidental secret commits
+.env
+.env.*
+.env.local
+*.env
+secrets/
+keys/
+credentials/
